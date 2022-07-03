@@ -33,6 +33,17 @@ public class UserProfile {
 		
 
 
+		public UserProfile(String name, String email, String password, String gender,String about) {
+			super();
+			
+			this.name = name;
+			this.email = email;
+			this.password = password;
+			this.gender = gender;
+			this.dateTime = dateTime;
+			this.about = about;
+		}
+
 		public int getId() {
 			return id;
 		}

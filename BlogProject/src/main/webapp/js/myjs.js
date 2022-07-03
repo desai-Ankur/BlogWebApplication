@@ -1,6 +1,3 @@
-
-/*
-
 function doLike(pid, uid)
 {
     console.log(pid + "," + uid)
@@ -26,4 +23,9 @@ function doLike(pid, uid)
             console.log(data)
         }
     })
-}*/
+}
+
+
+
+
+  

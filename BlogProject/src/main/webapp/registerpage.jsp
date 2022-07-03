@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +8,7 @@
 <title>Register Page</title>
 
 <link href="css/mystyle.css" rel="stylesheet" type="text/css"/>
-  <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/> 
+ <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/> 
   <script src="js/myjs.js" type="text/javascript"></script>
 	 <style type="text/css">
 	 	  .banner-background{
@@ -19,7 +19,7 @@
 <body>
 	<%@include file="navbar.jsp" %>
 	
-	<main class="primary-background  banner-background"  style="padding-bottom: 80px;">
+	<main class="primary-background"  style="padding-bottom: 80px;">
 
             <div class="container">
 
@@ -32,7 +32,7 @@
                             Register here
                         </div>
                         <div class="card-body">
-                            <form id="reg-form" action="RegisterServlet" method="POST">
+                            <form id="reg-form" action="UserRegisterServlet" method="POST">
 
                                 <div class="form-group">
                                     <label for="user_name">User Name</label>
@@ -56,8 +56,8 @@
                                 <div class="form-group">
                                     <label for="gender">Select Gender</label>
                                     <br>
-                                    <input type="radio"  id="gender" name="gender" value="male" >Male
-                                    <input type="radio"  id="gender" name="gender" value="famale">Female
+                                    <input type="radio" name="gender" value="Male" >Male
+                                    <input type="radio"  id="gender" name="gender" value="feMale">Female
                                 </div>
 
                                 <div class="form-group">
@@ -78,33 +78,19 @@
                                     <span class="fa fa-refresh fa-spin fa-4x"></span>
                                     <h4>Please wait..</h4>
                                 </div>
-
-                                <button id="sumbimt-btn" type="submit" class="btn btn-primary">Submit</button>
+								<div>
+                                   <button id="sumbimt-btn" type="submit" class="btn btn-primary">Submit</button>
+                               		<a href="Login.jsp"><u>If You have already account</u></a>
+                                	
+                                </div>
                             </form>
-
                         </div>
-
-
                     </div>
-
-
-
-
                 </div>
             </div>
-
         </main>
 	
 	
-	<script src="js/jquery-3.6.0.min.js" type="text/javascript"></script>
-	<script src="js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/font.js" type="text/javascript" ></script>
-    <script src="js/myjs.js" type="text/javascript"></script>
-	<script src="js/popper.min.js" type="text/javascript"></script>
-	<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	
-	
-	</script>
+	  <%@include file="footer.jsp" %>       
 </body>
 </html>

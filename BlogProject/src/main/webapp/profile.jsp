@@ -4,16 +4,14 @@
 <%@page import="com.kody.blog.helper.ConnectionProvider"%>
 <%@page import="com.kody.blog.dao.PostDao"%>
 <%@page import="com.kody.blog.entities.Message"%>
-<%@page import="com.kody.blog.entities.User"%>
+<%@page import="com.kody.blog.entities.UserProfile"%>
 <%@page errorPage="error_page.jsp" %>
 <%
 
-    User user = (User) session.getAttribute("currentUser");
+    UserProfile user = (UserProfile) session.getAttribute("currentUser");
     if (user == null) {
-        response.sendRedirect("login_page.jsp");
+        response.sendRedirect("Login.jsp");
     }
-
-
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,65 +38,12 @@
                 background-size: cover;
                 background-attachment: fixed;
             }
-
-
         </style>
     </head>
     <body>
         <!--navbar--> 
-
-        <nav class="navbar navbar-expand-lg navbar-dark primary-background">
-            <a class="navbar-brand" href="index.jsp"> <span class="fa fa-asterisk"></span>   Tech Blog</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#"> <span class="	fa fa-bell-o"></span> LearnCode with Durgesh <span class="sr-only">(current)</span></a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="	fa fa-check-square-o"></span> Categories
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Programming Language</a>
-                            <a class="dropdown-item" href="#">Project Implementation</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Data Structure</a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"> <span class="	fa fa-address-card-o"></span> Contact</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#add-post-modal" > <span class="	fa fa-asterisk"></span> Do Post</a>
-                    </li>
-
-
-
-                </ul>
-
-                <ul class="navbar-nav mr-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!" data-toggle="modal" data-target="#profile-modal"> <span class="fa fa-user-circle "></span> <%= user.getName()%> </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="LogoutServlet"> <span class="fa fa-user-plus "></span> Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-
-
+        <%@include file="navbar.jsp" %>       
         <!--end of navbar-->
-
 
         <%
             Message m = (Message) session.getAttribute("msg");
@@ -109,10 +54,8 @@
         </div> 
 
 
-        <%
-                session.removeAttribute("msg");
+        <% session.removeAttribute("msg");
             }
-
         %>
 
 
@@ -130,10 +73,11 @@
                             </a>
                             <!--categories-->
 
-                            <%                                PostDao d = new PostDao(ConnectionProvider.getConnection());
-                                ArrayList<Category> list1 = d.getAllCategories();
-                                for (Category cc : list1) {
-
+                            <%  
+                            	PostDao d1 = new PostDao(ConnectionProvider.getConnection());
+                                ArrayList<Category> catList = d1.getAllCategoriesByUid(user.getId());
+                                for (Category cc : catList) {
+									System.out.println(cc);
                             %>
                             <a href="#" onclick="getPosts(<%= cc.getCid()%>, this)" class=" c-link list-group-item list-group-item-action"><%= cc.getName()%></a>
 
@@ -141,6 +85,7 @@
                             <%                                        }
 
                             %>
+                            
                         </div>
 
                     </div>
@@ -274,6 +219,7 @@
                                 </form>    
 
                             </div>
+                            <!-- End Edit -->
 
                         </div>
                     </div>
@@ -307,7 +253,7 @@
                         <form id="add-post-form" action="AddPostServlet" method="post">
 
                             <div class="form-group">
-                                <select class="form-control" name="cid">
+                                <select class="form-control" name="categoryid">
                                     <option selected disabled>---Select Category---</option>
 
                                     <%
@@ -315,8 +261,7 @@
                                         ArrayList<Category> list = postd.getAllCategories();
                                         for (Category c : list) {
                                     %>
-                                    <option value="<%= c.getCid()%>"><%= c.getName()%></option>
-
+                                    <option value="<%= c.getCid()%>"><%= c.getName()%> <%= c.getCid()%></option>
                                     <%
                                         }
                                     %>
@@ -355,61 +300,40 @@
 
         <!--END add post modal-->
 
-
-
-
-
-
-
         <!--javascripts-->
-        <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-        <script src="js/myjs.js" type="text/javascript"></script>
-
-        <script>
+          <%@include file="footer.jsp" %>
+	    <script>
                                 $(document).ready(function () {
                                     let editStatus = false;
-
                                     $('#edit-profile-button').click(function ()
                                     {
-
                                         if (editStatus == false)
                                         {
                                             $("#profile-details").hide()
-
                                             $("#profile-edit").show();
                                             editStatus = true;
                                             $(this).text("Back")
                                         } else
                                         {
                                             $("#profile-details").show()
-
                                             $("#profile-edit").hide();
                                             editStatus = false;
                                             $(this).text("Edit")
-
                                         }
-
-
                                     })
                                 });
 
         </script>
         <!--now add post js-->
         <script>
-            $(document).ready(function (e) {
+      /*       $(document).ready(function (e) {
                 //
                 $("#add-post-form").on("submit", function (event) {
                     //this code gets called when form is submitted....
                     event.preventDefault();
                     console.log("you have clicked on submit..")
                     let form = new FormData(this);
-
+                    console.log("fsfs "+form)
                     //now requesting to server
                     $.ajax({
                         url: "AddPostServlet",
@@ -417,13 +341,13 @@
                         data: form,
                         success: function (data, textStatus, jqXHR) {
                             //success ..
-                            console.log(data);
+                            console.log("Maja "+data);
                             if (data.trim() == 'done')
                             {
                                 swal("Good job!", "saved successfully", "success");
                             } else
                             {
-                                swal("Error!!", "Something went wrong try again...", "error");
+                                swal("Error!!", "Hello Something went wrong try again...", "error");
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -434,42 +358,33 @@
                         contentType: false
                     })
                 })
-            })
+            }) */
         </script>
 
         <!--loading post using ajax-->
         <script>
+        function getPosts(catId, temp) {
+            $("#loader").show();
+            $("#post-container").hide()
+            $(".c-link").removeClass('active')
+            $.ajax({
+                url: "load_posts.jsp",
+                data: {cid: catId},
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    $("#loader").hide();
+                    $("#post-container").show();
+                    $('#post-container').html(data)
+                    $(temp).addClass('active')
 
-            function getPosts(catId, temp) {
-                $("#loader").show();
-                $("#post-container").hide()
-
-                $(".c-link").removeClass('active')
-
-
-                $.ajax({
-                    url: "load_posts.jsp",
-                    data: {cid: catId},
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        $("#loader").hide();
-                        $("#post-container").show();
-                        $('#post-container').html(data)
-                        $(temp).addClass('active')
-
-                    }
-                })
-
-            }
-
-            $(document).ready(function (e) {
-
-                let allPostRef = $('.c-link')[0]
-                getPosts(0, allPostRef)
-
-
+                }
             })
-        </script>
+        }
+        $(document).ready(function (e) {
 
+            let allPostRef = $('.c-link')[0]
+            getPosts(0, allPostRef)
+        })
+        </script>
     </body>
 </html>

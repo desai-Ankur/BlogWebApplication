@@ -88,7 +88,7 @@ p .reply {
 </head>
 <body>
 	
-          
+            <%@include file="navbar.jsp" %>       
   <div class="container">
     <div class="row text-center">
         <h3>Feedback</h3>
@@ -143,6 +143,6 @@ p .reply {
     </div>
 </div>				
 					-->	
-
+	  <%@include file="footer.jsp" %>       
 </body>
 </html>

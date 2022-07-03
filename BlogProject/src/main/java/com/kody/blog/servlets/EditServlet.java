@@ -5,21 +5,25 @@
  */
 package com.kody.blog.servlets;
 
-import com.kody.blog.dao.UserDao;
+
+import com.kody.blog.dao.UserProfileDao;
 import com.kody.blog.entities.Message;
-import com.kody.blog.entities.User;
+import com.kody.blog.entities.UserProfile;
 import com.kody.blog.helper.ConnectionProvider;
 import com.kody.blog.helper.Helper;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
+
+@MultipartConfig
 public class EditServlet extends HttpServlet {
 
     /**
@@ -48,13 +52,13 @@ public class EditServlet extends HttpServlet {
             String userName = request.getParameter("user_name");
             String userPassword = request.getParameter("user_password");
             String userAbout = request.getParameter("user_about");
-          //  Part part = request.getPart("image");
-     
-            String imageName ="default.png";// part.getSubmittedFileName();
+            Part part = request.getPart("image");
+
+            String imageName = part.getSubmittedFileName();
 
             //get the user from the session...
             HttpSession s = request.getSession();
-            User user = (User) s.getAttribute("currentUser");
+            UserProfile user = (UserProfile) s.getAttribute("currentUser");
             user.setEmail(userEmail);
             user.setName(userName);
             user.setPassword(userPassword);
@@ -64,7 +68,7 @@ public class EditServlet extends HttpServlet {
             user.setProfile(imageName);
 
             //update database....
-            UserDao userDao = new UserDao(ConnectionProvider.getConnection());
+            UserProfileDao userDao = new UserProfileDao(ConnectionProvider.getConnection());
 
             boolean ans = userDao.updateUser(user);
             if (ans) {
@@ -79,27 +83,24 @@ public class EditServlet extends HttpServlet {
                     Helper.deleteFile(pathOldFile);
                 }
 
-               /* if (Helper.saveFile(part.getInputStream(), path)) {
+                if (Helper.saveFile(part.getInputStream(), path)) {
                     out.println("Profile updated...");
                     Message msg = new Message("Profile details updated...", "success", "alert-success");
                     s.setAttribute("msg", msg);
 
                 } else {
-                    //////////////
                     Message msg = new Message("Something went wrong..", "error", "alert-danger");
                     s.setAttribute("msg", msg);
-                }*/
+                }
 
                 //end of phots work
             } else {
                 out.println("not updated..");
                 Message msg = new Message("Something went wrong..", "error", "alert-danger");
                 s.setAttribute("msg", msg);
-
             }
 
             response.sendRedirect("profile.jsp");
-
             out.println("</body>");
             out.println("</html>");
         }

@@ -1,4 +1,5 @@
-<%@page import="com.kody.blog.entities.User"%>
+
+<%@page import="com.kody.blog.entities.UserProfile"%>
 <%@page import="com.kody.blog.dao.LikeDao"%>
 <%@page import="com.kody.blog.entities.Post"%>
 <%@page import="java.util.List"%>
@@ -9,7 +10,7 @@
 
     <%
         
-        User uuu=(User)session.getAttribute("currentUser");
+        UserProfile uuu=(UserProfile)session.getAttribute("currentUser");
         
         Thread.sleep(1000);
         PostDao d = new PostDao(ConnectionProvider.getConnection());
@@ -17,7 +18,7 @@
         int cid = Integer.parseInt(request.getParameter("cid"));
         List<Post> posts = null;
         if (cid == 0) {
-            posts = d.getAllPosts();
+            posts = d.getAllPosts(uuu.getId());
         } else {
             posts = d.getPostByCatId(cid);
         }
@@ -32,11 +33,11 @@
 
     <div class="col-md-6 mt-2">
         <div class="card">
-            <img class="card-img-top" src="blog_pics/<%= p.getpPic()%>" alt="Card image cap">
+            <img class="card-img-top" src="pics/<%= p.getpPic()%>" alt="Card image cap" style="height: 300px">
             <div class="card-body">
                 <b><%= p.getpTitle()%></b>
-                <p><%= p.getpContent()%></p>
-
+               <%String str= p.getpContent();%>
+				 <p><%=str.substring(0, 150)+"..." %></p>
             </div>
             <div class="card-footer primary-background text-center">
                 <% 

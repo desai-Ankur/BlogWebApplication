@@ -8,6 +8,9 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/admin/Downloads/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="D:/New/jar file/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="D:/New/jar file/commons-io-2.2.jar"/>
+	<classpathentry kind="lib" path="D:/New/jar file/javax.servlet-api-4.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/New/jar file/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
